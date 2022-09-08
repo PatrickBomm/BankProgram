@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="pt"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ContaMagica.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">banco</a> &gt; <a href="index.source.html" class="el_package">com.example</a> &gt; <span class="el_source">ContaMagica.java</span></div><h1>ContaMagica.java</h1><pre class="source lang-java linenums">package com.example;
+
+public class ContaMagica {
+    private String numero;
+    private String nomeCorrentista;
+    private double saldo;
+    private Categoria categoria;
+
+<span class="fc" id="L9">    public ContaMagica(String numero, String nomeCorrentista) {</span>
+<span class="fc" id="L10">        this.numero = numero;</span>
+<span class="fc" id="L11">        this.nomeCorrentista = nomeCorrentista;</span>
+<span class="fc" id="L12">        this.saldo = 0.0;</span>
+<span class="fc" id="L13">        this.categoria = Categoria.SILVER;</span>
+<span class="fc" id="L14">        verificaNome(nomeCorrentista);</span>
+<span class="fc" id="L15">        verificaNroConta(numero);</span>
+<span class="fc" id="L16">    }</span>
+
+    public String getNumeroConta() {
+<span class="fc" id="L19">        return numero;</span>
+    }
+
+    public String getNomeCorrentista() {
+<span class="fc" id="L23">        return nomeCorrentista;</span>
+    }
+
+    public double getSaldo() {
+<span class="fc" id="L27">        return saldo;</span>
+    }
+
+    public Categoria getCategoria() {
+<span class="fc" id="L31">        return categoria;</span>
+    }
+
+    public boolean deposito(double valor) {
+<span class="pc bpc" id="L35" title="1 of 2 branches missed.">        if (valor &lt;= 0.0) {</span>
+<span class="nc" id="L36">            return false;</span>
+        }
+<span class="fc bfc" id="L38" title="All 4 branches covered.">        if (categoria == Categoria.SILVER &amp;&amp; saldo &lt; 50000) {</span>
+<span class="fc" id="L39">            saldo += valor;</span>
+<span class="fc" id="L40">            return true;</span>
+        }
+<span class="pc bpc" id="L42" title="1 of 4 branches missed.">        if (categoria == Categoria.SILVER &amp;&amp; saldo &gt;= 50000) {</span>
+<span class="fc" id="L43">            saldo += valor;</span>
+<span class="fc" id="L44">            categoria = Categoria.GOLD;</span>
+<span class="fc" id="L45">            return true;</span>
+        }
+<span class="pc bpc" id="L47" title="2 of 4 branches missed.">        if (categoria == Categoria.GOLD &amp;&amp; saldo &lt; 200000) {</span>
+<span class="nc" id="L48">            saldo += valor * 0.01;</span>
+<span class="nc" id="L49">            return true;</span>
+        }
+<span class="pc bpc" id="L51" title="2 of 4 branches missed.">        if (categoria == Categoria.GOLD &amp;&amp; saldo &gt;= 200000) {</span>
+<span class="fc" id="L52">            saldo += valor * 1.01;</span>
+<span class="fc" id="L53">            categoria = Categoria.PLATINUM;</span>
+<span class="fc" id="L54">            return true;</span>
+        }
+<span class="nc bnc" id="L56" title="All 2 branches missed.">        if (categoria == Categoria.PLATINUM) {</span>
+<span class="nc" id="L57">            saldo += valor * 1.02;</span>
+<span class="nc" id="L58">            return true;</span>
+        }
+<span class="nc" id="L60">        return false;</span>
+    }
+
+    public boolean retirada(double valor) {
+<span class="pc bpc" id="L64" title="1 of 2 branches missed.">        if (valor &lt;= 0.0) {</span>
+<span class="nc" id="L65">            return true;</span>
+        }
+<span class="pc bpc" id="L67" title="3 of 4 branches missed.">        if (categoria == Categoria.PLATINUM &amp;&amp; saldo &gt; 100000) {</span>
+<span class="nc" id="L68">            saldo -= valor;</span>
+        }
+<span class="pc bpc" id="L70" title="3 of 4 branches missed.">        if (categoria == Categoria.PLATINUM &amp;&amp; saldo &lt; 100000) {</span>
+<span class="nc" id="L71">            saldo -= valor;</span>
+<span class="nc" id="L72">            categoria = Categoria.GOLD;</span>
+        }
+<span class="pc bpc" id="L74" title="3 of 4 branches missed.">        if (categoria == Categoria.GOLD &amp;&amp; saldo &gt; 25000) {</span>
+<span class="nc" id="L75">            saldo -= valor * 0.025;</span>
+        }
+<span class="pc bpc" id="L77" title="3 of 4 branches missed.">        if (categoria == Categoria.GOLD &amp;&amp; saldo &lt;= 25000) {</span>
+<span class="nc" id="L78">            saldo += valor * 0.01;</span>
+<span class="nc" id="L79">            categoria = Categoria.SILVER;</span>
+        }
+<span class="pc bpc" id="L81" title="2 of 4 branches missed.">        if (categoria == Categoria.SILVER &amp;&amp; saldo - valor &gt; 0) {</span>
+<span class="fc" id="L82">            saldo -= valor;</span>
+        }
+<span class="fc" id="L84">        return false;</span>
+    }
+
+    private void verificaNroConta(String numero) {
+<span class="fc" id="L88">        int posTraco = numero.indexOf('-');</span>
+<span class="fc" id="L89">        String nroStr = numero.substring(0, posTraco);</span>
+<span class="fc" id="L90">        int nroConta = Integer.parseInt(nroStr);</span>
+<span class="fc" id="L91">        int verificador = Integer.parseInt(numero.substring(posTraco + 1));</span>
+
+<span class="pc bpc" id="L93" title="1 of 4 branches missed.">        if (nroConta &lt; 99999 || nroConta &gt; 999999) {</span>
+<span class="fc" id="L94">            throw new IllegalNumberException();</span>
+        }
+<span class="fc" id="L96">        int soma = 0;</span>
+<span class="fc bfc" id="L97" title="All 2 branches covered.">        for (int i = 0; i &lt; nroStr.length(); i++) {</span>
+<span class="fc" id="L98">            soma += (Integer.parseInt(nroStr.charAt(i) + &quot;&quot;));</span>
+        }
+<span class="pc bpc" id="L100" title="1 of 2 branches missed.">        if (soma != verificador) {</span>
+<span class="nc" id="L101">            throw new IllegalNumberException();</span>
+        }
+<span class="fc" id="L103">    }</span>
+
+    @Override
+    public String toString() {
+<span class="nc" id="L107">        return &quot;ContaMagica [categoria=&quot; + categoria + &quot;, nomeCorrentista=&quot; + nomeCorrentista + &quot;, numero=&quot; + numero</span>
+                + &quot;, saldo=&quot; + saldo + &quot;]&quot;;
+    }
+
+    private void verificaNome(String nome) {
+<span class="fc bfc" id="L112" title="All 2 branches covered.">        if (nome.length() &lt; 3) {</span>
+<span class="fc" id="L113">            throw new IllegalNameException();</span>
+        }
+<span class="fc" id="L115">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.4.201905082037</span></div></body></html>
