@@ -64,6 +64,9 @@ public class ContaMagica {
         if (valor <= 0.0) {
             throw new IllegalValueException();
         }
+        if(valor > saldo) {
+            throw new IllegalValueException();
+        }
         if (categoria == Categoria.PLATINUM && saldo > 100000) {
             saldo -= valor;
         }

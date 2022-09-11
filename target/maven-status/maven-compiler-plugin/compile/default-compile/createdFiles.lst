@@ -1,0 +1,6 @@
+com\example\ContaMagica.class
+com\example\IllegalValueException.class
+com\example\IllegalNumberException.class
+com\example\App.class
+com\example\Categoria.class
+com\example\IllegalNameException.class
